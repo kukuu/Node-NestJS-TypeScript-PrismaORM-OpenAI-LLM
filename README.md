@@ -4,7 +4,7 @@
 
 When you run the project, you should see a webpage that displays cards with information about Star Wars characters. This data is stored in an internal sqllite database.
 
-package.json has been strategically been removed from here.
+package.json has been strategically removed.
 
 ### Requirements
 
