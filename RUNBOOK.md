@@ -81,8 +81,6 @@ The integration was finalized by adding comprehensive state management for loadi
 
  ![POST Card](https://github.com/kukuu/Applied/blob/main/coding-challenge/docs/POST-Card.png)
 
- ## Charwacter Card
-
-**CharacterCard.ts**
+ ## Character Card
 
 The CharacterCard.tsx component displays individual character information in a card format and provides a like/unlike functionality. It shows character details (name, height, mass, hair color, etc.) and includes a heart button that toggles between liked and unliked states.
