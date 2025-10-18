@@ -28,6 +28,10 @@ export function CharacterCard({
     }
   };
 
+  const handleUnlike = async () => {
+    console.log("unlike");
+  };
+
   return (
     <div className="p-6 rounded-lg border border-black/[.08] dark:border-white/[.145] hover:border-transparent transition-all hover:shadow-lg">
       <div className="flex flex-col gap-4">
@@ -36,24 +40,17 @@ export function CharacterCard({
             <h2 className="text-xl font-semibold">{character.name}</h2>
           </div>
           <button
-            onClick={handleLike}
+            onClick={isLiked ? handleUnlike : handleLike}
             disabled={isLiking}
-            className={`flex items-center gap-2 px-4 py-2 rounded-full transition-colors disabled:opacity-50 ${
-              isLiked 
-                ? 'bg-pink-600 hover:bg-pink-700 text-white' 
-                : 'bg-pink-100 hover:bg-pink-200 dark:bg-pink-900 dark:hover:bg-pink-800'
-            }`}
+            className="flex items-center gap-2 px-4 py-2 rounded-full bg-pink-100 hover:bg-pink-200 dark:bg-pink-900 dark:hover:bg-pink-800 transition-colors disabled:opacity-50"
           >
             <Image
-              src={isLiked ? "/heart-filled.svg" : "/heart.svg"}
-              alt={isLiked ? "Unlike" : "Like"}
+              src="/heart.svg"
+              alt="Like"
               width={16}
               height={16}
-              className={isLiked ? "text-white" : "text-pink-600"}
+              className="text-pink-600"
             />
-            <span className="text-sm font-medium">
-              {isLiked ? 'Liked' : 'Like'}
-            </span>
           </button>
         </div>
         <div className="grid grid-cols-2 gap-3 text-sm">

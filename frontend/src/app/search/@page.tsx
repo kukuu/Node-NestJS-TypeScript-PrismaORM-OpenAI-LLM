@@ -15,11 +15,11 @@ export default function SearchPage() {
     setResponse("");
 
     try {
-      const res = await fetch("http://localhost:3002/search", { // Fixed URL
+      const res = await fetch("/api/search", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-         // apiKey: process.env.NEXT_PUBLIC_API_KEY || "",
+          apiKey: process.env.NEXT_PUBLIC_API_KEY || "",
         },
         body: JSON.stringify({ prompt: query }),
       });
@@ -48,7 +48,7 @@ export default function SearchPage() {
               value={query}
               onChange={(e) => setQuery(e.target.value)}
               disabled={isLoading}
-              placeholder="Ask a question about Star Wars characters..."
+              placeholder="Ask a question..."
               className="flex-1 px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-pink-500 focus:border-transparent disabled:opacity-50"
             />
             <button
@@ -80,14 +80,3 @@ export default function SearchPage() {
     </div>
   );
 }
-
-/*
-Try queries like:
-
-"Who is the tallest character?"
-
-"List all male characters"
-
-"Who has blue eyes?"
-
-*/

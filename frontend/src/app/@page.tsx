@@ -6,10 +6,11 @@ import { useEffect, useState } from "react";
 import { CreateDialog } from "@/components/CreateDialog";
 
 export default function Home() {
-  const [characters, setCharacters] = useState<Character[]>([]);
+  const [characters, setCharacters] = useState<
+    (Character & { isLiked: boolean })[]
+  >([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  const [likedCharacterIds, setLikedCharacterIds] = useState<Set<number>>(new Set());
 
   const fetchCharacters = async () => {
     try {
@@ -42,53 +43,26 @@ export default function Home() {
     }
   };
 
-  const fetchLikedCharacters = async () => {
-    try {
-      const response = await fetch("http://localhost:3002/user/likes");
-      if (response.ok) {
-        const { characterIds } = await response.json();
-        setLikedCharacterIds(new Set(characterIds));
-      }
-    } catch (error) {
-      console.error("Failed to fetch liked characters:", error);
-    }
-  };
-
   useEffect(() => {
     fetchCharacters();
-    fetchLikedCharacters();
   }, []);
-
-  const handleToggleLike = async (characterId: number) => {
-    try {
-      const response = await fetch(`http://localhost:3002/characters/${characterId}/toggle-like`, {
-        method: "POST",
-      });
-      
-      if (response.ok) {
-        const { liked } = await response.json();
-        
-        setLikedCharacterIds(prev => {
-          const newSet = new Set(prev);
-          if (liked) {
-            newSet.add(characterId);
-          } else {
-            newSet.delete(characterId);
-          }
-          return newSet;
-        });
-      }
-    } catch (error) {
-      console.error("Failed to toggle like:", error);
-    }
-  };
 
   const handleRetry = () => {
     console.log("🔄 Retry button clicked");
     fetchCharacters();
-    fetchLikedCharacters();
   };
 
+  const handleLike = async (characterId: number) => {
+    try {
+      await fetch(`http://localhost:3002/characters/${characterId}/like`, {
+        method: "POST",
+      });
+    } catch (error) {
+      console.error("Failed to like character:", error);
+    }
+  };
+
+  // Test if backend is reachable
   const testBackendConnection = async () => {
     try {
       console.log("🔍 Testing backend connection...");
@@ -154,8 +128,8 @@ export default function Home() {
               <CharacterCard
                 key={character.id}
                 character={character}
-                isLiked={likedCharacterIds.has(character.id)}
-                onLike={handleToggleLike}
+                isLiked={true}
+                onLike={handleLike}
               />
             ))}
           </div>
