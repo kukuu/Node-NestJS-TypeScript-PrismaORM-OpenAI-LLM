@@ -5,5 +5,4 @@ export declare class OpenAIService {
     private pineconeStore;
     constructor();
     process(prompt: string): Promise<string>;
-    private fallbackResponse;
 }

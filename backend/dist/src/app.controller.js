@@ -39,6 +39,14 @@ let AppController = class AppController {
     likeCharacter(id) {
         return this.likes.create(parseInt(id), 1);
     }
+    async toggleLike(id) {
+        const result = await this.likes.toggleLike(parseInt(id), 1);
+        return { liked: result.liked };
+    }
+    async getUserLikes() {
+        const characterIds = await this.likes.getUserLikes(1);
+        return { characterIds };
+    }
     listLikes(id) {
         return this.likes.list(parseInt(id), 1);
     }
@@ -78,6 +86,21 @@ __decorate([
     __metadata("design:returntype", Promise)
 ], AppController.prototype, "likeCharacter", null);
 __decorate([
+    (0, common_1.Post)('characters/:id/toggle-like'),
+    (0, common_1.UseGuards)(api_key_guard_1.ApiKeyGuard),
+    __param(0, (0, common_1.Param)('id')),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [String]),
+    __metadata("design:returntype", Promise)
+], AppController.prototype, "toggleLike", null);
+__decorate([
+    (0, common_1.Get)('user/likes'),
+    (0, common_1.UseGuards)(api_key_guard_1.ApiKeyGuard),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", []),
+    __metadata("design:returntype", Promise)
+], AppController.prototype, "getUserLikes", null);
+__decorate([
     (0, common_1.Get)('characters/:id/likes'),
     (0, common_1.UseGuards)(api_key_guard_1.ApiKeyGuard),
     __param(0, (0, common_1.Param)('id')),
@@ -103,7 +126,6 @@ __decorate([
 ], AppController.prototype, "listUserLikes", null);
 __decorate([
     (0, common_1.Post)('search'),
-    (0, common_1.UseGuards)(api_key_guard_1.ApiKeyGuard),
     __param(0, (0, common_1.Body)('prompt')),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [String]),

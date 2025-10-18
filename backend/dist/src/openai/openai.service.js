@@ -20,21 +20,48 @@ let OpenAIService = class OpenAIService {
     pinecone;
     pineconeStore;
     constructor() {
-        this.embeddings = new openai_2.OpenAIEmbeddings({
-            apiKey: process.env.OPENAI_API_KEY || '',
-            model: 'text-embedding-3-small',
-            dimensions: 512,
-        });
-        this.llm = new openai_1.ChatOpenAI({
-            model: 'gpt-4o-mini',
-            apiKey: process.env.OPENAI_API_KEY || '',
-        });
-        this.pinecone = new pinecone_1.Pinecone({
-            apiKey: process.env.PINECONE_API_KEY || '',
-        });
+        const openAIApiKey = process.env.OPENAI_API_KEY;
+        const pineconeApiKey = process.env.PINECONE_API_KEY;
+        if (openAIApiKey) {
+            this.embeddings = new openai_2.OpenAIEmbeddings({
+                apiKey: openAIApiKey,
+                model: 'text-embedding-3-small',
+                dimensions: 512,
+            });
+            this.llm = new openai_1.ChatOpenAI({
+                model: 'gpt-4o-mini',
+                apiKey: openAIApiKey,
+            });
+        }
+        if (pineconeApiKey) {
+            this.pinecone = new pinecone_1.Pinecone({
+                apiKey: pineconeApiKey,
+            });
+        }
     }
-    process(prompt) {
-        throw new common_1.NotImplementedException('Method not implemented');
+    async process(prompt) {
+        return this.fallbackResponse(prompt);
+    }
+    fallbackResponse(prompt) {
+        const lowerPrompt = prompt.toLowerCase();
+        if (lowerPrompt.includes('hello') || lowerPrompt.includes('hi') || lowerPrompt.includes('hey')) {
+            return 'Hello! I can help you with Star Wars character information.';
+        }
+        else if (lowerPrompt.includes('star wars') || lowerPrompt.includes('character')) {
+            return 'I can provide information about Star Wars characters from the database.';
+        }
+        else if (lowerPrompt.includes('help')) {
+            return `I can help you search through Star Wars characters. Try asking about:
+• Character heights and attributes
+• Gender information
+• Appearance details
+• Character lists
+
+Note: Advanced AI features are currently disabled.`;
+        }
+        else {
+            return 'I understand you\'re asking about Star Wars characters. For detailed responses, please enable AI features with an API key.';
+        }
     }
 };
 exports.OpenAIService = OpenAIService;

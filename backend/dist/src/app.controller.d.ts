@@ -20,6 +20,12 @@ export declare class AppController {
     }): Promise<Character>;
     listCharacters(): Promise<Character[]>;
     likeCharacter(id: string): Promise<Like>;
+    toggleLike(id: string): Promise<{
+        liked: boolean;
+    }>;
+    getUserLikes(): Promise<{
+        characterIds: number[];
+    }>;
     listLikes(id: string): Promise<Like[]>;
     countLikes(id: string): Promise<number>;
     listUserLikes(id: string): Promise<(Like & {

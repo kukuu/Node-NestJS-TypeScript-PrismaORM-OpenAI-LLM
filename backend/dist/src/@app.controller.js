@@ -30,6 +30,9 @@ let AppController = class AppController {
         this.openai = openai;
         this.users = users;
     }
+    createCharacter(characterData) {
+        return this.characters.create(characterData);
+    }
     listCharacters() {
         return this.characters.list();
     }
@@ -51,6 +54,14 @@ let AppController = class AppController {
     }
 };
 exports.AppController = AppController;
+__decorate([
+    (0, common_1.Post)('characters'),
+    (0, common_1.UseGuards)(api_key_guard_1.ApiKeyGuard),
+    __param(0, (0, common_1.Body)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Object]),
+    __metadata("design:returntype", Promise)
+], AppController.prototype, "createCharacter", null);
 __decorate([
     (0, common_1.Get)('characters'),
     (0, common_1.UseGuards)(api_key_guard_1.ApiKeyGuard),

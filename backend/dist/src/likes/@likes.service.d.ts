@@ -3,11 +3,6 @@ import { Like } from '@prisma/client';
 export declare class LikesService {
     private readonly database;
     constructor(database: DatabaseService);
-    toggleLike(characterId: number, authorId?: number): Promise<{
-        liked: boolean;
-        like?: Like;
-    }>;
-    getUserLikes(authorId?: number): Promise<number[]>;
     create(characterId: number, authorId: number): Promise<Like>;
     list(characterId: number, authorId: number): Promise<Like[]>;
     count(characterId: number, authorId: number): Promise<number>;

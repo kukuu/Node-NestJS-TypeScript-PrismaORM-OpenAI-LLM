@@ -42,22 +42,6 @@ export class AppController {
     return this.likes.create(parseInt(id), 1);
   }
 
-  // NEW: TOGGLE LIKE/UNLIKE ENDPOINT
-  @Post('characters/:id/toggle-like')
-  @UseGuards(ApiKeyGuard)
-  async toggleLike(@Param('id') id: string): Promise<{ liked: boolean }> {
-    const result = await this.likes.toggleLike(parseInt(id), 1);
-    return { liked: result.liked };
-  }
-
-  // NEW: GET USER LIKES ENDPOINT
-  @Get('user/likes')
-  @UseGuards(ApiKeyGuard)
-  async getUserLikes(): Promise<{ characterIds: number[] }> {
-    const characterIds = await this.likes.getUserLikes(1);
-    return { characterIds };
-  }
-
   @Get('characters/:id/likes')
   @UseGuards(ApiKeyGuard)
   listLikes(@Param('id') id: string): Promise<Like[]> {
@@ -79,7 +63,7 @@ export class AppController {
   }
 
   @Post('search')
-  //@UseGuards(ApiKeyGuard)
+  @UseGuards(ApiKeyGuard)
   async search(@Body('prompt') prompt: string): Promise<{ content: string }> {
     const response = await this.openai.process(prompt);
     return { content: response };

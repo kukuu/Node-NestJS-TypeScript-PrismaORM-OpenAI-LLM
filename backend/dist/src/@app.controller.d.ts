@@ -9,6 +9,15 @@ export declare class AppController {
     private readonly openai;
     private readonly users;
     constructor(characters: CharactersService, likes: LikesService, openai: OpenAIService, users: UsersService);
+    createCharacter(characterData: {
+        name: string;
+        height: string;
+        mass: string;
+        hairColour: string;
+        skinColour: string;
+        eyeColour: string;
+        gender: string;
+    }): Promise<Character>;
     listCharacters(): Promise<Character[]>;
     likeCharacter(id: string): Promise<Like>;
     listLikes(id: string): Promise<Like[]>;

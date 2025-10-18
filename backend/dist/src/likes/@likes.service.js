@@ -10,50 +10,39 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.LikesService = void 0;
-const common_1 = require("@nestjs/common");
 const database_service_1 = require("../database/database.service");
+const common_1 = require("@nestjs/common");
 let LikesService = class LikesService {
     database;
     constructor(database) {
         this.database = database;
     }
-    async toggleLike(characterId, authorId = 1) {
-        const existingLike = await this.database.like.findFirst({
-            where: { characterId, authorId },
-        });
-        if (existingLike) {
-            await this.database.like.delete({
-                where: { id: existingLike.id },
-            });
-            return { liked: false };
-        }
-        else {
-            const like = await this.database.like.create({
-                data: { characterId, authorId },
-            });
-            return { liked: true, like };
-        }
-    }
-    async getUserLikes(authorId = 1) {
-        const likes = await this.database.like.findMany({
-            where: { authorId },
-            select: { characterId: true },
-        });
-        return likes.map(like => like.characterId);
-    }
     create(characterId, authorId) {
         return this.database.like.create({
-            data: { characterId, authorId },
+            data: {
+                characterId,
+                authorId,
+            },
         });
     }
     list(characterId, authorId) {
         return this.database.like.findMany({
-            where: { characterId, authorId },
+            include: {
+                character: true,
+                author: true,
+            },
+            where: {
+                characterId,
+                authorId,
+            },
         });
     }
     count(characterId, authorId) {
         return this.database.like.count({
-            where: { characterId, authorId },
+            where: {
+                characterId,
+                authorId,
+            },
         });
     }
 };
@@ -62,4 +51,4 @@ exports.LikesService = LikesService = __decorate([
     (0, common_1.Injectable)(),
     __metadata("design:paramtypes", [database_service_1.DatabaseService])
 ], LikesService);
-//# sourceMappingURL=likes.service.js.map
+//# sourceMappingURL=@likes.service.js.map
